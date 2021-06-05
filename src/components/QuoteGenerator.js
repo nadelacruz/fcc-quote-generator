@@ -7,10 +7,13 @@ import { FaTwitter, FaTumblr } from 'react-icons/fa';
 const QuoteGenerator = () => {
     const color = randomcolor();
     const [quotes, setQuotes] = useState(theQuotes);
-    const generateQuoteIndex = Math.floor(Math.random() * quotes.length);
+    const [randomIndex, setRandomIndex] = useState(Math.floor(Math.random() * quotes.length));
     const handleGenerateButton = () => {
         setQuotes([...quotes]);
+        setRandomIndex(Math.floor(Math.random() * quotes.length));
     }
+    const tweetURL = `https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text="${quotes[randomIndex].quote.replace(/\s\s+/g, ' ').replace(/\s/g, '%20')}"%20${quotes[randomIndex].author.replace(/\s\s+/g, ' ').replace(/\s/g, '%20')}`
+    const tumblrURL = `https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quotes,freecodecamp&caption=${quotes[randomIndex].author.replace(/\s\s+/g, ' ').replace(/\s/g, '%20')}&content=${quotes[randomIndex].quote.replace(/\s\s+/g, ' ').replace(/\s/g, '%20')}&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button`
     return (
         <Box backgroundColor={color}
         minH="100vh"
@@ -27,15 +30,15 @@ const QuoteGenerator = () => {
                     <Box 
                     display="flex"
                     flexDirection="column">
-                        <Text fontSize="3xl" color={color}>{quotes[generateQuoteIndex].quote}</Text>
-                        <Text alignSelf="flex-end" fontSize="md" padding="20px" color={color}>- {quotes[generateQuoteIndex].author}</Text>
+                        <Text fontSize="3xl" color={color}>{quotes[randomIndex].quote}</Text>
+                        <Text alignSelf="flex-end" fontSize="md" padding="20px" color={color}>- {quotes[randomIndex].author}</Text>
                     </Box>
                     <Box display="flex"
                     justifyContent="space-between"
                     >
                         <Box>
-                            <IconButton as="a" target="_blank" variant="outline" href="https://chakra-ui.com" aria-label="Twitter" icon={<FaTwitter/>} margin="0px 5px" backgroundColor={color} color="white"/>
-                            <IconButton aria-label="Tumblr" icon={<FaTumblr/>} backgroundColor={color} color="white"/>
+                            <IconButton as="a" target="_self" variant="outline" href={tweetURL} aria-label="Twitter" icon={<FaTwitter/>} margin="0px 5px" backgroundColor={color} color="white"/>
+                            <IconButton as="a" target="_self" variant="outline" href={tumblrURL} aria-label="Tumblr" icon={<FaTumblr/>} backgroundColor={color} color="white"/>
                         </Box>
                         <Button backgroundColor={color} color="white" onClick={handleGenerateButton}>New Quote</Button>
                     </Box>
